@@ -15,7 +15,7 @@
     },
     "encoder": {
         "rotary": [
-            { "pin_a": "B1", "pin_b": "B3", "resolution": 4 }
+            { "pin_a": "B3", "pin_b": "B1", "resolution": 4 }
         ]
     },
     "layouts": {

@@ -1,6 +1,6 @@
 {
   "name": "ErgoGnome",
-  "lighting": "none",
+  "lighting": "qmk_rgblight",
   "matrix": {
     "rows": 6,
     "cols": 15

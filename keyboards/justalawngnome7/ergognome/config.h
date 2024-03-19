@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-//#include "config_common.h"
-
 /* key matrix size */
 #define MATRIX_ROWS 6
 #define MATRIX_COLS 15
@@ -37,32 +35,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_COL_PINS { F0, F1, F4, F5, F6, F7, D5, C7, C6, B6, B5, B4, D7, D6, D4 }
 #define DIODE_DIRECTION COL2ROW
 
-/* number of backlight levels */
-//#define BACKLIGHT_PIN C6
-// #define BACKLIGHT_BREATHING
-//#define BACKLIGHT_LEVELS 3
-
+/* RGB light settings */
 #define WS2812_DI_PIN B0
-// #ifdef RGB_DI_PIN
-//   #define RGBLED_NUM 16
-//   #define RGBLIGHT_HUE_STEP 8
-//   #define RGBLIGHT_SAT_STEP 8
-//   #define RGBLIGHT_VAL_STEP 8
-//   #define RGBLIGHT_LIMIT_VAL 255 /* The maximum brightness level */
-//   #define RGBLIGHT_SLEEP  /* If defined, the RGB lighting will be switched off when the host goes to sleep */
-// /*== all animations enable ==*/
-//   #define RGBLIGHT_ANIMATIONS
-// /*== or choose animations ==*/
-//   #define RGBLIGHT_EFFECT_BREATHING
-//   #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-//   #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-//   #define RGBLIGHT_EFFECT_SNAKE
-//   #define RGBLIGHT_EFFECT_KNIGHT
-//   #define RGBLIGHT_EFFECT_CHRISTMAS
-//   #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-//   #define RGBLIGHT_EFFECT_RGB_TEST
-//   #define RGBLIGHT_EFFECT_ALTERNATING
-// #endif
+#ifdef WS2812_DI_PIN
+  #define RGBLED_NUM 84
+  #define RGBLIGHT_LED_MAP { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 71, 70, 69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 59, 58, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 }
+  #define RGBLIGHT_SLEEP /* RGB lighting will be switched off when the host goes to sleep */
+  #define RGBLIGHT_LIMIT_VAL 175 // OK: 183, ERROR: 185 (crashes the keyboard on Asus laptop)
+
+  /* Default to use upon clearing the EEPROM */
+  #define RGBLIGHT_DEFAULT_ON true
+  #define RGBLIGHT_DEFAULT_HUE 43
+  #define RGBLIGHT_DEFAULT_SAT 0
+  #define RGBLIGHT_DEFAULT_SPD 64
+
+  /* Step values for moving up/down */
+  #define RGBLIGHT_HUE_STEP 8
+  #define RGBLIGHT_SAT_STEP 8
+  #define RGBLIGHT_VAL_STEP 8
+
+  /* choose RGB animations */
+  #define RGBLIGHT_EFFECT_ALTERNATING
+  #define RGBLIGHT_EFFECT_BREATHING
+  #define RGBLIGHT_EFFECT_CHRISTMAS
+  #define RGBLIGHT_EFFECT_KNIGHT
+  #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+  #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+  #define RGBLIGHT_EFFECT_RGB_TEST
+  #define RGBLIGHT_EFFECT_SNAKE
+  #define RGBLIGHT_EFFECT_STATIC_GRADIENT
+  #define RGBLIGHT_EFFECT_TWINKLE
+#endif
 
 /* Debounce reduces chatter (unintended double-presses) - set 0 if debouncing is not needed */
 #define DEBOUNCE 5
@@ -75,14 +78,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
-
-//#define ENCODERS_PAD_A { F4 }
-//#define ENCODERS_PAD_B { F5 }
-//#define ENCODER_DIRECTION_FLIP
-
-//#define ENCODERS_PAD_A { B1 }
-//#define ENCODERS_PAD_B { B3 }
-//#define ENCODER_DIRECTION_FLIP
 
 
 /* If defined, GRAVE_ESC will always act as ESC when CTRL is held.

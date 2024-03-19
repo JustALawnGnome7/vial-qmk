@@ -1,4 +1,9 @@
-VIA_ENABLE = yes
-VIAL_ENABLE = yes
 LTO_ENABLE = yes
 ENCODER_MAP_ENABLE = yes
+VIA_ENABLE = yes
+VIAL_ENABLE = yes
+
+# Shrink firmware to fit on EEPROM
+QMK_SETTINGS = no
+TAP_DANCE_ENABLE = no
+COMBO_ENABLE = no

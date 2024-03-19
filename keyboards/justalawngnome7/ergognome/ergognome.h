@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include "quantum.h"
 
 /* This a shortcut to help you visually see your layout.
