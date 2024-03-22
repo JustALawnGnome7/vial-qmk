@@ -35,9 +35,59 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MATRIX_COL_PINS { F0, F1, F4, F5, F6, F7, D5, C7, C6, B6, B5, B4, D7, D6, D4 }
 #define DIODE_DIRECTION COL2ROW
 
-/* RGB light settings */
 #define WS2812_DI_PIN B0
-#ifdef WS2812_DI_PIN
+
+/* RGB Matrix settings (preferred over "RGB Lighting" if possible) */
+#if defined(RGB_MATRIX_ENABLE)
+  #define RGB_MATRIX_LED_COUNT 84
+  #define RGB_MATRIX_SLEEP // turn off effects when suspended
+  #define RGB_MATRIX_LED_PROCESS_LIMIT (RGB_MATRIX_LED_COUNT + 4) / 5 // limits the number of LEDs to process in an animation per task run (increases keyboard responsiveness)
+  #define RGB_MATRIX_LED_FLUSH_LIMIT 16 // limits in milliseconds how frequently an animation will update the LEDs. 16 (16ms) is equivalent to limiting to 60fps (increases keyboard responsiveness)
+  #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 175
+
+  #define RGB_MATRIX_DEFAULT_ON true
+  #define RGB_MATRIX_DEFAULT_HUE 43
+  #define RGB_MATRIX_DEFAULT_SAT 0
+  #define RGB_MATRIX_DEFAULT_SPD 64
+
+  /* Enable RGB Matrix effects */
+  //#define ENABLE_RGB_MATRIX_ALPHAS_MODS
+  //#define ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
+  //#define ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
+  #define ENABLE_RGB_MATRIX_BREATHING
+  //#define ENABLE_RGB_MATRIX_BAND_SAT
+  //#define ENABLE_RGB_MATRIX_BAND_VAL
+  //#define ENABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
+  //#define ENABLE_RGB_MATRIX_BAND_PINWHEEL_VAL
+  //#define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+  //#define ENABLE_RGB_MATRIX_BAND_SPIRAL_VAL
+  //#define ENABLE_RGB_MATRIX_CYCLE_ALL
+  //#define ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
+  //#define ENABLE_RGB_MATRIX_CYCLE_UP_DOWN
+  //#define ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
+  //#define ENABLE_RGB_MATRIX_CYCLE_OUT_IN
+  //#define ENABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL
+  //#define ENABLE_RGB_MATRIX_CYCLE_PINWHEEL
+  //#define ENABLE_RGB_MATRIX_CYCLE_SPIRAL
+  //#define ENABLE_RGB_MATRIX_DUAL_BEACON
+  //#define ENABLE_RGB_MATRIX_RAINBOW_BEACON
+  #define ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
+  //#define ENABLE_RGB_MATRIX_FLOWER_BLOOMING
+  //#define ENABLE_RGB_MATRIX_RAINDROPS
+  //#define ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
+  //#define ENABLE_RGB_MATRIX_HUE_BREATHING
+  //#define ENABLE_RGB_MATRIX_HUE_PENDULUM
+  //#define ENABLE_RGB_MATRIX_HUE_WAVE
+  //#define ENABLE_RGB_MATRIX_PIXEL_FRACTAL
+  //#define ENABLE_RGB_MATRIX_PIXEL_FLOW
+  //#define ENABLE_RGB_MATRIX_PIXEL_RAIN
+  //#define ENABLE_RGB_MATRIX_STARLIGHT
+  //#define ENABLE_RGB_MATRIX_STARLIGHT_DUAL_HUE
+  //#define ENABLE_RGB_MATRIX_STARLIGHT_DUAL_SAT
+  //#define ENABLE_RGB_MATRIX_RIVERFLOW
+
+/* RGB Lighting settings */
+#elif defined(RGBLIGHT_ENABLE)
   #define RGBLED_NUM 84
   #define RGBLIGHT_LED_MAP { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 71, 70, 69, 68, 67, 66, 65, 64, 63, 62, 61, 60, 59, 58, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 }
   #define RGBLIGHT_SLEEP /* RGB lighting will be switched off when the host goes to sleep */

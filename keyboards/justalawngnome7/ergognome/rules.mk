@@ -20,5 +20,7 @@ BLUETOOTH_ENABLE = no       # Enable Bluetooth
 AUDIO_ENABLE = no           # Audio output
 
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
-RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
-RGBLIGHT_DEFAULT_ON = true  # Enable RGB lighting upon clearing the EEPROM
+#RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
+#RGBLIGHT_DEFAULT_ON = true # Enable RGB lighting upon clearing the EEPROM
+RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_DRIVER = ws2812
