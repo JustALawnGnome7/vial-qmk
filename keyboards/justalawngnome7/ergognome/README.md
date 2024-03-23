@@ -5,7 +5,7 @@
 The ErgoGnome is a 75% Alice-like keyboard inspired by the GMMK Pro layout.
 
 * Keyboard Maintainer: [JustALawnGnome7](https://github.com/JustALawnGnome7)
-* Hardware Supported: ErgoGnome 0.1 (i.e., "proto-1.0") PCB
+* Hardware Supported: ErgoGnome v0.1 (i.e., "proto-1.0") PCB
 * Hardware Availability: [PCB, case, &amp; wrist rest files](https://github.com/JustALawnGnome7/ErgoGnome)
 
 A `make` example for the ErgoGnome firmware (after setting up the build environment):
