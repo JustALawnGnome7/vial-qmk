@@ -1,6 +1,6 @@
 {
   "name": "ErgoGnome",
-  "lighting": "qmk_rgblight",
+  "lighting": "vialrgb",
   "matrix": {
     "rows": 6,
     "cols": 15

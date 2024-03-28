@@ -57,6 +57,79 @@ led_config_t g_led_config = { {
     0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04,         // row4, right-to-left
     0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04                      // row5, left-to-right (bot)
 } };
+#endif
+
+bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
+    if (!process_record_user(keycode, record)) {
+        return false;
+    }
+    switch (keycode) {
+        case RGB_TOG:
+            if (record->event.pressed) {
+                switch (rgb_matrix_get_flags()) {
+                    case LED_FLAG_ALL: {
+                        rgb_matrix_set_flags(LED_FLAG_NONE);
+                        rgb_matrix_set_color_all(0, 0, 0);
+                    } break;
+                    default: {
+                        rgb_matrix_set_flags(LED_FLAG_ALL);
+                    } break;
+                }
+            }
+            if (!rgb_matrix_is_enabled()) {
+                rgb_matrix_set_flags(LED_FLAG_ALL);
+                rgb_matrix_enable();
+            }
+            return false;
+    }
+    return true;
+}
+
+bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
+    if (!rgb_matrix_indicators_advanced_user(led_min, led_max)) {
+        return false;
+    }
+
+    /*
+    // Highlight the available keys when a layer other than "0" is active
+    if (get_highest_layer(layer_state) > 0) {
+        uint8_t layer = get_highest_layer(layer_state);
+
+        for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
+            for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
+                uint8_t index = g_led_config.matrix_co[row][col];
+
+                if (index >= led_min && index < led_max && index != NO_LED &&
+                keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
+                    rgb_matrix_set_color(index, RGB_GREEN);
+                }
+            }
+        }
+    }
+    */
+
+    // RGB_MATRIX_INDICATOR_SET_COLOR(index, red, green, blue);
+#   if defined(CAPS_LOCK_LED_INDEX)
+        if (host_keyboard_led_state().caps_lock) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(CAPS_LOCK_LED_INDEX, 255, 0, 0);
+        } else {
+            if (!rgb_matrix_get_flags()) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(CAPS_LOCK_LED_INDEX, 0, 0, 0);
+            }
+        }
+#   endif // CAPS_LOCK_LED_INDEX
+#   if defined(NUM_LOCK_LED_INDEX)
+        if (host_keyboard_led_state().num_lock) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(NUM_LOCK_LED_INDEX, 255, 0, 0);
+        } else {
+            if (!rgb_matrix_get_flags()) {
+                RGB_MATRIX_INDICATOR_SET_COLOR(NUM_LOCK_LED_INDEX, 0, 0, 0);
+            }
+        }
+#   endif // NUM_LOCK_LED_INDEX
+
+    return true;
+}
 
 /*
 Index    Name         X           Y
@@ -146,4 +219,3 @@ Index    Name         X           Y
 82      LED79   335.915     149.123
 83      LED84   354.965     149.123
 */
-#endif
