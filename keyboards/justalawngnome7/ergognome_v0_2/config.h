@@ -35,6 +35,21 @@
 //#define I2C1_TIMINGR_SCLH   45U
 //#define I2C1_TIMINGR_SCLL   149U
 
+// From: "mino_plus/soldered"
+// I2C setup
+#define I2C_DRIVER I2CD1
+#define I2C1_SCL_PIN B6
+#define I2C1_SDA_PIN B7
+#define I2C1_SCL_PAL_MODE 4
+#define I2C1_SDA_PAL_MODE 4
+//#define I2C1_TIMINGR_PRESC 0x00U  // used by I2Cv2, which STM32F4xx doesn't support
+//#define I2C1_TIMINGR_SCLDEL 0x03U // used by I2Cv2, which STM32F4xx doesn't support
+//#define I2C1_TIMINGR_SDADEL 0x01U // used by I2Cv2, which STM32F4xx doesn't support
+//#define I2C1_TIMINGR_SCLH 0x03U   // used by I2Cv2, which STM32F4xx doesn't support
+//#define I2C1_TIMINGR_SCLL 0x09U   // used by I2Cv2, which STM32F4xx doesn't support
+#define I2C1_CLOCK_SPEED 100000
+
+
 // From: acheron apollo 87h
 // RGB Matrix defines
 #define IS31FL3741_I2C_ADDRESS_1 IS31FL3741_I2C_ADDRESS_GND

@@ -22,7 +22,7 @@
         "polling_interval": 1
     },
     "matrix_pins": {
-        "cols": ["B0", "B1", "B3", "B4", "B6", "B7", "B8", "B9", "B10", "B12", "C13", "C14", "C15"],
+        "cols": ["B0", "B1", "B3", "B4", "B5", "A5", "B8", "B9", "B10", "B12", "C13", "C14", "C15"],
         "rows": ["A0", "A1", "A2", "A3", "A8", "A15", "B13", "B14", "B15"]
     },
     "diode_direction": "COL2ROW",
