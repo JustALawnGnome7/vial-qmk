@@ -8,10 +8,12 @@
 #define VIAL_UNLOCK_COMBO_ROWS { 0, 8 }
 #define VIAL_UNLOCK_COMBO_COLS { 0, 13 }
 
-/* Set the Bootmagic combo to the `Esc` key (default) */
-#define BOOTMAGIC_ROW 0
-#define BOOTMAGIC_COLUMN 0
-
 /* Enable indicator LEDs */
 //#define CAPS_LOCK_LED_INDEX 44
 //#define NUM_LOCK_LED_INDEX 44
+
+/*
+#define VIAL_TAP_DANCE_ENTRIES 4
+#define VIAL_COMBO_ENTRIES 4
+#define VIAL_KEY_OVERRIDE_ENTRIES 4
+*/
