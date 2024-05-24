@@ -10,10 +10,3 @@
 
 /* Enable indicator LEDs */
 //#define CAPS_LOCK_LED_INDEX 44
-//#define NUM_LOCK_LED_INDEX 44
-
-/*
-#define VIAL_TAP_DANCE_ENTRIES 4
-#define VIAL_COMBO_ENTRIES 4
-#define VIAL_KEY_OVERRIDE_ENTRIES 4
-*/

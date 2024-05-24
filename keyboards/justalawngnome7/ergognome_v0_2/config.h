@@ -10,6 +10,10 @@
         "rows": ["A0", "A1", "A4", "A6", "A7", "A8", "A9", "A10", "A11"]
 */
 
+///* key matrix size */
+#define MATRIX_ROWS 4
+#define MATRIX_COLS 4
+
 // I2C setup
 #define I2C_DRIVER I2CD1
 #define I2C1_SCL_PIN B6
