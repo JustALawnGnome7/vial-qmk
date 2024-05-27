@@ -7,18 +7,22 @@
 #include "debug.h"
 #include "encoder.h"
 
-#define I2C_ADDR 0x20
+#define I2C_ADDR_1 0x20 // LEFT-HAND
+#define I2C_ADDR_2 0x27 // RIGHT-HAND
 
 // C4 C3 C2 C1 R1 R2 R3 R4 (indicated on board)
 // R4 R3 R2 R1 C4 C3 C2 C1 (looking sideways)
 // input: 1 / output: 0
-#define ROW_POS { 0b00010000, 0b00100000, 0b01000000, 0b10000000 }
+//              | ----------------- LEFT-HAND ----------------- | ----------------- RIGHT-HAND ----------------- |
+#define ROW_POS { 0b00010000, 0b00100000, 0b01000000, 0b10000000, 0b00010000, 0b00100000, 0b01000000, 0b10000000 }
 
 static uint8_t mcp23018_errors = 0;
 
 static void mcp23018_init_cols(void) {
-    mcp23018_errors += !mcp23018_set_config(I2C_ADDR, mcp23018_PORTA, ALL_INPUT);
-    mcp23018_errors += !mcp23018_set_config(I2C_ADDR, mcp23018_PORTB, ALL_INPUT);
+    mcp23018_errors += !mcp23018_set_config(I2C_ADDR_1, mcp23018_PORTA, ALL_INPUT);
+    mcp23018_errors += !mcp23018_set_config(I2C_ADDR_1, mcp23018_PORTB, ALL_INPUT);
+    mcp23018_errors += !mcp23018_set_config(I2C_ADDR_2, mcp23018_PORTA, ALL_INPUT);
+    mcp23018_errors += !mcp23018_set_config(I2C_ADDR_2, mcp23018_PORTB, ALL_INPUT);
 }
 
 static void mcp23018_scan(void) {
@@ -36,13 +40,18 @@ static void mcp23018_scan(void) {
     }
 }
 
-static matrix_row_t read_cols(void) {
+//static matrix_row_t read_cols(void) {
+static matrix_row_t read_cols(uint8_t current_row) {
     if (mcp23018_errors) {
         return 0;
     }
 
-    uint8_t ret = 0xFF;                                                     // sets all to 1
-    mcp23018_errors += !mcp23018_readPins(I2C_ADDR, mcp23018_PORTB, &ret);  // will update with values 0 = pulled down by connection, 1 = pulled up by pullup resistors
+    uint8_t ret = 0xFF; // sets all to 1
+    if (current_row < 4) {
+        mcp23018_errors += !mcp23018_readPins(I2C_ADDR_1, mcp23018_PORTB, &ret); // will update with values 0 = pulled down by connection, 1 = pulled up by pullup resistors
+    } else {
+        mcp23018_errors += !mcp23018_readPins(I2C_ADDR_2, mcp23018_PORTB, &ret);
+    }
 
     return (~ret) & 0b00001111; // Clears out the row bits.
 }
@@ -55,7 +64,11 @@ static void select_row(uint8_t row) {
         return;
     }
 
-    mcp23018_set_config(I2C_ADDR, mcp23018_PORTB, ~(row_pos[row]));
+    if (row < 4) {
+        mcp23018_set_config(I2C_ADDR_1, mcp23018_PORTB, ~(row_pos[row]));
+    } else {
+        mcp23018_set_config(I2C_ADDR_2, mcp23018_PORTB, ~(row_pos[row]));
+    }
 }
 
 static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row) {
@@ -69,13 +82,15 @@ static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row)
     select_row(current_row);
     // Skip the wait_us(30); as i2c is slow enough to debounce the io changes
 
-    current_matrix[current_row] = read_cols();
+    //current_matrix[current_row] = read_cols();
+    current_matrix[current_row] = read_cols(current_row);
 
     return (last_row_value != current_matrix[current_row]);
 }
 
 void matrix_init_custom(void) {
-    mcp23018_init(I2C_ADDR);
+    mcp23018_init(I2C_ADDR_1);
+    mcp23018_init(I2C_ADDR_2);
     mcp23018_init_cols();
 }
 

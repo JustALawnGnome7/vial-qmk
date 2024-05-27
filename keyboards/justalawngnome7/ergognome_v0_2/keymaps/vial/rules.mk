@@ -2,13 +2,4 @@ VIA_ENABLE = yes
 VIAL_ENABLE = yes
 VIALRGB_ENABLE = yes
 
-#LTO_ENABLE = yes
 #ENCODER_MAP_ENABLE = yes
-#BOOTMAGIC_ENABLE = yes
-
-## Shrink firmware to fit on EEPROM
-#QMK_SETTINGS = no
-#TAP_DANCE_ENABLE = no
-#COMBO_ENABLE = no
-#KEY_OVERRIDE_ENABLE = no
-#LTO_ENABLE = yes
