@@ -6,4 +6,11 @@ I2C_DRIVER_REQUIRED = yes
 # custom matrix setup
 CUSTOM_MATRIX = lite # <yes/lite>
 VPATH += drivers/gpio
-SRC += mcp23018.c matrix.c
+SRC += matrix.c \
+	   mcp23018.c
+
+#ENCODER_ENABLE = yes
+#ENCODER_MAP_ENABLE = yes
+ifeq ($(strip $(ENCODER_ENABLE)), yes)
+	SRC += encoder.c
+endif
