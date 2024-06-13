@@ -1,12 +1,11 @@
 // Copyright 2024 Miles Ramage
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "matrix.h"
 #include "ergognome_v0_2.h"
-#include "mcp23018.h"
-#include "wait.h"
-#include "debug.h"
-#include "encoder.h"
+//#include "mcp23018.h"
+//#include "matrix.h"
+//#include "wait.h"
+//#include "debug.h"
 
 static uint8_t mcp23018_errors = 0;
 
@@ -15,6 +14,13 @@ static void mcp23018_init_cols(void) {
     mcp23018_errors += !mcp23018_set_config(MCP23018_1_ADDR, mcp23018_PORTB, ALL_INPUT);
     mcp23018_errors += !mcp23018_set_config(MCP23018_2_ADDR, mcp23018_PORTA, ALL_INPUT);
     mcp23018_errors += !mcp23018_set_config(MCP23018_2_ADDR, mcp23018_PORTB, ALL_INPUT);
+
+    //mcp23018_errors += !mcp23018_set_config(I2C_ADDR, mcp23018_PORTB, 0b01100000);
+
+    //mcp23018_errors += !mcp23018_set_config(MCP23018_1_ADDR, mcp23018_PORTA, 0b11111111);
+    //mcp23018_errors += !mcp23018_set_config(MCP23018_1_ADDR, mcp23018_PORTB, 0b11110000);
+    //mcp23018_errors += !mcp23018_set_config(MCP23018_2_ADDR, mcp23018_PORTA, 0b11111111);
+    //mcp23018_errors += !mcp23018_set_config(MCP23018_2_ADDR, mcp23018_PORTB, 0b11110000);
 }
 
 static void mcp23018_scan(void) {
@@ -31,7 +37,7 @@ static void mcp23018_scan(void) {
         mcp23018_init_cols();
 
 #ifdef ENCODER_ENABLE
-        encoder_init();
+        mcp23018_encoder_init();
 #endif
     }
 }
@@ -44,6 +50,8 @@ static matrix_row_t read_cols(uint8_t current_row) {
     uint8_t ret = 0xFF; // sets all to 1
     matrix_row_pos_t row_pos = ergognome_matrix_rows[current_row];
 
+    // ret = 0b11111110
+    // col_pins = 0b00001111
     mcp23018_errors += !mcp23018_readPins(row_pos.i2c_addr, mcp23018_PORTB, &ret);
 
     return (~ret) & row_pos.col_pins;
@@ -58,6 +66,9 @@ static void select_row(uint8_t row) {
 
     matrix_row_pos_t row_pos = ergognome_matrix_rows[row];
     mcp23018_set_config(row_pos.i2c_addr, row_pos.port, ~(row_pos.row_pos));
+
+    //matrix_row_pos_t row_pos = ergognome_matrix_rows[row];
+    //mcp23018_errors += !mcp23018_set_output(row_pos.i2c_addr, row_pos.port, ~(row_pos.row_pos) & 0b00001111);
 }
 
 static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row) {
@@ -88,10 +99,11 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     bool changed = false;
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
         changed |= read_cols_on_row(current_matrix, current_row);
+    }
 
 #ifdef ENCODER_ENABLE
-        encoder_read();
+    mcp23018_encoder_read();
 #endif
-    }
+
     return changed;
 }

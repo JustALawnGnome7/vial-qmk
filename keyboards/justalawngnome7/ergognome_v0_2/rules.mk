@@ -8,9 +8,10 @@ CUSTOM_MATRIX = lite # <yes/lite>
 VPATH += drivers/gpio
 SRC += matrix.c \
 	   mcp23018.c
+#	   ergognome_encoder.c
 
 #ENCODER_ENABLE = yes
 #ENCODER_MAP_ENABLE = yes
-ifeq ($(strip $(ENCODER_ENABLE)), yes)
-	SRC += encoder.c
-endif
+#ifeq ($(strip $(ENCODER_ENABLE)), yes)
+#	SRC += ergognome_encoder.c
+#endif

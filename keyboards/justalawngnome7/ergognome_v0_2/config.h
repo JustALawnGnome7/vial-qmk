@@ -8,6 +8,10 @@
 #define MATRIX_COLS_RIGHT 4
 #define MATRIX_COLS 4
 
+#ifdef ENCODER_ENABLE
+    #define NUM_ENCODERS 1
+#endif
+
 // I2C setup
 #define I2C_DRIVER          I2CD1
 #define I2C1_SCL_PIN        B6
