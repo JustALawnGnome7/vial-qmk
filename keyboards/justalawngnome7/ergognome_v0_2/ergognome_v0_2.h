@@ -83,14 +83,14 @@ void mcp23018_encoder_init(void);
 typedef struct {
     uint8_t i2c_addr;
     mcp23018_port_t port;
-    uint8_t row_pos;
+    uint8_t pin;
     uint8_t col_pins;
-} matrix_row_pos_t;
+} matrix_row_config_t;
 
 // C4 C3 C2 C1 R1 R2 R3 R4 (indicated on board)
 // R4 R3 R2 R1 C4 C3 C2 C1 (looking sideways)
 // input: 1 / output: 0
-static const matrix_row_pos_t ergognome_matrix_rows[MATRIX_ROWS] = {
+static const matrix_row_config_t matrix_row_configs[MATRIX_ROWS] = {
     { MCP23018_1_ADDR, mcp23018_PORTA, ROW_0_PIN, COL_PINS_LEFT },  // row 0
     { MCP23018_1_ADDR, mcp23018_PORTA, ROW_1_PIN, COL_PINS_LEFT },  // row 1
     { MCP23018_1_ADDR, mcp23018_PORTA, ROW_2_PIN, COL_PINS_LEFT },  // row 2
@@ -100,29 +100,3 @@ static const matrix_row_pos_t ergognome_matrix_rows[MATRIX_ROWS] = {
     { MCP23018_2_ADDR, mcp23018_PORTA, ROW_6_PIN, COL_PINS_RIGHT }, // row 6
     { MCP23018_2_ADDR, mcp23018_PORTA, ROW_7_PIN, COL_PINS_RIGHT }  // row 7
 };
-
-
-// --- Define columns ----------------------------------
-//typedef struct {
-//    uint8_t i2c_addr;
-//    mcp23018_port_t port;
-//    uint8_t col_pins;
-//} matrix_col_t;
-
-//static const uint8_t ergognome_matrix_col_pins[MATRIX_COLS] = {
-//    0b00000001,
-//    0b00000010,
-//    0b00000100,
-//    0b00001000,
-//};
-
-//static const matrix_col_t ergognome_matrix_cols[MATRIX_ROWS] = {
-//    { MCP23018_ADDR_1, mcp23018_PORTB, 0b00001111 }, // row 0
-//    { MCP23018_ADDR_1, mcp23018_PORTB, 0b00001111 }, // row 1
-//    { MCP23018_ADDR_1, mcp23018_PORTB, 0b00001111 }, // row 2
-//    { MCP23018_ADDR_1, mcp23018_PORTB, 0b00001111 }, // row 3
-//    //{ MCP23018_ADDR_2, mcp23018_PORTB, 0b00001111 }, // row 4
-//    //{ MCP23018_ADDR_2, mcp23018_PORTB, 0b00001111 }, // row 5
-//    //{ MCP23018_ADDR_2, mcp23018_PORTB, 0b00001111 }, // row 6
-//    //{ MCP23018_ADDR_2, mcp23018_PORTB, 0b00001111 }  // row 7
-//};
