@@ -64,7 +64,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
             init_pins_MCP23018();
 
             #ifdef ENCODER_ENABLE
-            mcp23018_encoder_init();
+            encoder_init_MCP23018();
             #endif
         }
         return changed;
@@ -75,7 +75,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     }
 
     #ifdef ENCODER_ENABLE
-    mcp23018_encoder_read();
+    encoder_read_MCP23018();
     #endif
 
     return changed;

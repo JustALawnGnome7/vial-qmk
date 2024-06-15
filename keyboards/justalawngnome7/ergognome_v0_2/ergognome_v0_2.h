@@ -1,14 +1,14 @@
 // Copyright 2024 Miles Ramage
 // SPDX-License-Identifier: GPL-2.0-or-later
-//
+
 #pragma once
 
 #include "quantum.h"
 #include "mcp23018.h"
 
 // Public Functions
-void mcp23018_encoder_read(void);
-void mcp23018_encoder_init(void);
+void encoder_read_MCP23018(void);
+void encoder_init_MCP23018(void);
 
 // Preprocessor Directives
 #define MCP23018_1_ADDR 0x20 // LEFT-HAND

@@ -7,8 +7,8 @@ I2C_DRIVER_REQUIRED = yes
 CUSTOM_MATRIX = lite # <yes/lite>
 VPATH += drivers/gpio
 SRC += matrix.c \
-	   mcp23018.c
-#	   ergognome_encoder.c
+	   mcp23018.c \
+	   ergognome_encoder.c
 
 #ENCODER_ENABLE = yes
 #ENCODER_MAP_ENABLE = yes

@@ -32,7 +32,7 @@
         "bootmagic": true,
         "command": false,
         "console": false,
-        "encoder": false,
+        "encoder": true,
         "fauxclicky": false,
         "mousekey": true,
         "extrakey": true,
