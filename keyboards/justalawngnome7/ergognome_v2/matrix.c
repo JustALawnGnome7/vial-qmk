@@ -1,7 +1,7 @@
 // Copyright 2024 Miles Ramage
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "ergognome_v0_2.h"
+#include "ergognome_v2.h"
 
 // Optimize scanning code for speed as a slight mitigation for the port expander
 #pragma GCC push_options
@@ -72,11 +72,11 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
 
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
         changed |= read_cols_on_row_MCP23018(current_matrix, current_row);
-    }
 
-    #ifdef ENCODER_ENABLE
-    encoder_read_MCP23018();
-    #endif
+        #ifdef ENCODER_ENABLE
+        encoder_read_MCP23018();
+        #endif
+    }
 
     return changed;
 }

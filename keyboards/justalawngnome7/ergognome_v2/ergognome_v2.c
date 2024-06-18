@@ -1,7 +1,7 @@
 // Copyright 2024 Miles Ramage <miles.ramage@yahoo.com>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "ergognome_v0_2.h"
+#include "ergognome_v2.h"
 
 #ifdef RGB_MATRIX_ENABLE
 const is31fl3741_led_t PROGMEM g_is31fl3741_leds[RGB_MATRIX_LED_COUNT] = {
