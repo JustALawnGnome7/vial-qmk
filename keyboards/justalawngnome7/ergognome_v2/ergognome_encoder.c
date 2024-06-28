@@ -2,35 +2,18 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "ergognome_v2.h"
-//#include "mcp23018.h"
-//#include "encoder.h"
 #include "debug.h"
 
-#define MCP23018_2_ADDR 0x27 // RIGHT-HAND
-#define MCP23018_2_A6 0b01000000
-#define MCP23018_2_A7 0b10000000
-
-#define ENCODER_PIN_A   MCP23018_2_A6
-#define ENCODER_PIN_B   MCP23018_2_A7
-#define ENCODER_PINS    (ENCODER_PIN_A | ENCODER_PIN_B)
-
-#ifndef ENCODER_RESOLUTION
-#    define ENCODER_RESOLUTION 4
-#endif
-
-static uint8_t mcp23018_errors = 0;
-
-#define ENCODER_CLOCKWISE true
-#define ENCODER_COUNTER_CLOCKWISE false
+#define ENCODER_PINS                (ENCODER_PIN_A | ENCODER_PIN_B)
+#define ENCODER_RESOLUTION          4
+#define ENCODER_CLOCKWISE           true
+#define ENCODER_COUNTER_CLOCKWISE   false
 
 static int8_t encoder_LUT[] = {0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0};
-
 static uint8_t encoder_state  = 0;
 static int8_t  encoder_pulses = 0;
 
-__attribute__((weak)) extern const uint16_t PROGMEM encoder_keymaps[][2][2];
-
-const uint16_t encoder_default[NUM_ENCODERS][2] =  { { KC_VOLD, KC_VOLU } };
+static uint8_t mcp23018_errors = 0;
 
 static bool encoder_read_state(uint8_t *state) {
     uint8_t ret = 0xFF; // sets all to 1
@@ -44,8 +27,27 @@ static bool encoder_read_state(uint8_t *state) {
     return true;
 }
 
-static void encoder_update(int8_t index, uint8_t state) {
-    encoder_pulses += encoder_LUT[state & 0xF];
+static bool encoder_update(int8_t index, uint8_t state) {
+    // Return false if no encoder pulse change was detected.
+    int8_t encoder_pulse_change = encoder_LUT[state & 0xF];
+    if (encoder_pulse_change == 0) {
+        return false;
+    }
+
+    //// Check for encoder direction changes to avoid an encoder "deadzone" (e.g., turning the
+    //// encoder 1 detent CCW with a "pulses" value of 3 causes the firmware to miss the change,
+    //// because 3 minus 4 equals -1, which doesn't fall outside of -4 and 4.)
+    //bool encoder_changed_direction = ((encoder_pulses > 0) != (encoder_pulse_change > 0));
+    //if (encoder_changed_direction)  {
+    //    // Reset encoder pulses if they changed direction...
+    //    encoder_pulses = encoder_pulse_change;
+    //} else {
+    //    // ...otherwise, add the pulse change to the encoder pulses.
+    //    encoder_pulses += encoder_pulse_change;
+    //}
+
+    // Determine if the encoder has moved sufficiently to update the encoder.
+    encoder_pulses += encoder_pulse_change;
     if (encoder_pulses >= ENCODER_RESOLUTION) {
         encoder_update_kb(index, ENCODER_CLOCKWISE);
     }
@@ -53,16 +55,22 @@ static void encoder_update(int8_t index, uint8_t state) {
         encoder_update_kb(index, ENCODER_COUNTER_CLOCKWISE);
     }
     encoder_pulses %= ENCODER_RESOLUTION;
+
+    // Notify the caller of the pulse change.
+    return true;
 }
 
 // Read the encoder over i2c
-void encoder_read_MCP23018(void) {
+bool encoder_read_MCP23018(void) {
     uint8_t state;
-    if (encoder_read_state(&state)) {
-        encoder_state <<= 2;
-        encoder_state |= state;
-        encoder_update(1, encoder_state);
+    if (!encoder_read_state(&state)) {
+        return false;
     }
+
+    encoder_state <<= 2;
+    encoder_state |= state;
+    bool changed = encoder_update(1, encoder_state);
+    return changed;
 }
 
 // Initialize the encoder over i2c

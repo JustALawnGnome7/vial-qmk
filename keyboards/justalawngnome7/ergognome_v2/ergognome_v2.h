@@ -5,9 +5,10 @@
 
 #include "quantum.h"
 #include "mcp23018.h"
+//#include "mcp23009.h"
 
 // Public Functions
-void encoder_read_MCP23018(void);
+bool encoder_read_MCP23018(void);
 void encoder_init_MCP23018(void);
 
 // Preprocessor Directives
@@ -76,8 +77,8 @@ void encoder_init_MCP23018(void);
 #define COL_3R_PIN       MCP23018_2_B3
 #define COL_PINS_RIGHT  (COL_0R_PIN | COL_1R_PIN | COL_2R_PIN | COL_3R_PIN)
 
-#define ENCODER_CW  MCP23018_2_A6
-#define ENCODER_CCW MCP23018_2_A7
+#define ENCODER_PIN_A   MCP23018_2_A6
+#define ENCODER_PIN_B   MCP23018_2_A7
 
 // --- Define rows -------------------------------------
 typedef struct {

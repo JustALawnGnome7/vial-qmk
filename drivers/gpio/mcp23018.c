@@ -10,12 +10,28 @@
 #define TIMEOUT 100
 
 enum {
-    CMD_IODIRA = 0x00, // i/o direction register
-    CMD_IODIRB = 0x01,
-    CMD_GPPUA  = 0x0C, // GPIO pull-up resistor register
-    CMD_GPPUB  = 0x0D,
-    CMD_GPIOA  = 0x12, // general purpose i/o port register (write modifies OLAT)
-    CMD_GPIOB  = 0x13,
+    CMD_IODIRA    = 0x00, // i/o direction register
+    CMD_IODIRB    = 0x01,
+  //CMD_IPOLA     = 0x02, // input polarity port register
+  //CMD_IPOLB     = 0x03,
+    CMD_GPINTENA  = 0x04, // interrupt-on-change pins
+    CMD_GPINTENB  = 0x05,
+  //CMD_DEFVALA   = 0x06, // default value register
+  //CMD_DEFVALB   = 0x07,
+  //CMD_INTCONA   = 0x08, // interrupt-on-change control register
+  //CMD_INTCONB   = 0x09,
+  //CMD_IOCON     = 0x0A, // i/o expander configuration register
+  //CMD_IOCON     = 0x0B,
+    CMD_GPPUA     = 0x0C, // GPIO pull-up resistor register
+    CMD_GPPUB     = 0x0D,
+  //CMD_INTFA     = 0x0E, // interrupt flag register
+  //CMD_INTFB     = 0x0F,
+  //CMD_INTCAPA   = 0x10, // interrupt captured value for port register
+  //CMD_INTCAPB   = 0x11,
+    CMD_GPIOA     = 0x12, // general purpose i/o port register (write modifies OLAT)
+    CMD_GPIOB     = 0x13,
+  //CMD_OLATA     = 0x14, // output latch register
+  //CMD_OLATB     = 0x15,
 };
 
 void mcp23018_init(uint8_t addr) {
@@ -42,6 +58,19 @@ bool mcp23018_set_config(uint8_t slave_addr, mcp23018_port_t port, uint8_t conf)
     ret = i2c_write_register(addr, cmdPullup, &conf, sizeof(conf), TIMEOUT);
     if (ret != I2C_STATUS_SUCCESS) {
         dprintf("mcp23018_set_config::pullupFAILED::%u\n", ret);
+        return false;
+    }
+
+    return true;
+}
+
+bool mcp23018_set_gpinten(uint8_t slave_addr, mcp23018_port_t port, uint8_t conf) {
+    uint8_t addr = SLAVE_TO_ADDR(slave_addr);
+    uint8_t cmd  = port ? CMD_GPINTENB : CMD_GPINTENA;
+
+    i2c_status_t ret = i2c_write_register(addr, cmd, &conf, sizeof(conf), TIMEOUT);
+    if (ret != I2C_STATUS_SUCCESS) {
+        dprintf("mcp23018_set_gpinten::FAILED::%u\n", ret);
         return false;
     }
 
